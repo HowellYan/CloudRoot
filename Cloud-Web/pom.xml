@@ -10,6 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>Cloud-Web</artifactId>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <start-class>eurekademo.EurekaApplication</start-class>
+        <java.version>1.8</java.version>
+        <docker.image.prefix>springcloud</docker.image.prefix>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -21,5 +28,29 @@
             <artifactId>spring-cloud-starter-eureka</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.2.3</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
+
+
+        </plugins>
+    </build>
 
 </project>
